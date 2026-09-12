@@ -1,0 +1,140 @@
+<div>
+  <pre class="language-markup">    
+    <code class="language-html">
+      <span class="hljs-meta">&lt;!DOCTYPE 
+        <span class="hljs-keyword">html</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">html</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">head</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">title</span>&gt;
+      </span>Ma Bibliothèque BDBOOK
+      <span class="hljs-tag">&lt;/
+        <span class="hljs-name">title</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">style</span>&gt;
+      </span>
+        body { font-family: sans-serif; padding: 20px; }
+        input { padding: 10px; width: 300px; }
+        #results { margin-top: 20px; }
+      <span class="hljs-tag">&lt;/
+        <span class="hljs-name">style</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;/
+        <span class="hljs-name">head</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">body</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">h1</span>&gt;
+      </span>Catalogue BDBOOK
+      <span class="hljs-tag">&lt;/
+        <span class="hljs-name">h1</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">input</span> 
+        <span class="hljs-attr">type</span>=
+        <span class="hljs-string">"text"</span> 
+        <span class="hljs-attr">id</span>=
+        <span class="hljs-string">"search"</span> 
+        <span class="hljs-attr">placeholder</span>=
+        <span class="hljs-string">"Rechercher par sujet ou titre..."</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">div</span> 
+        <span class="hljs-attr">id</span>=
+        <span class="hljs-string">"results"</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;/
+        <span class="hljs-name">div</span>&gt;
+      </span>
+
+      
+      <span class="hljs-tag">&lt;
+        <span class="hljs-name">script</span>&gt;
+      </span>
+      <span class="language-javascript">
+        <span class="hljs-title function_">fetch</span>(
+        <span class="hljs-string">'catalogue.json'</span>)
+            .
+        <span class="hljs-title function_">then</span>(
+        <span class="hljs-function">
+          <span class="hljs-params">res</span> =&gt;
+        </span> res.
+        <span class="hljs-title function_">json</span>())
+            .
+        <span class="hljs-title function_">then</span>(
+        <span class="hljs-function">
+          <span class="hljs-params">data</span> =&gt;
+        </span> {
+        <span class="hljs-variable language_">document</span>.
+        <span class="hljs-title function_">getElementById</span>(
+        <span class="hljs-string">'search'</span>).
+        <span class="hljs-title function_">addEventListener</span>(
+        <span class="hljs-string">'input'</span>, 
+        <span class="hljs-function">(
+          <span class="hljs-params">e</span>) =&gt;
+        </span> {
+        <span class="hljs-keyword">const</span> val = e.
+        <span class="hljs-property">target</span>.
+        <span class="hljs-property">value</span>.
+        <span class="hljs-title function_">toLowerCase</span>();
+        <span class="hljs-keyword">const</span> filtered = data.
+        <span class="hljs-title function_">filter</span>(
+        <span class="hljs-function">
+          <span class="hljs-params">book</span> =&gt;
+        </span> 
+                        book.
+        <span class="hljs-property">titre</span>.
+        <span class="hljs-title function_">toLowerCase</span>().
+        <span class="hljs-title function_">includes</span>(val) || 
+                        book.
+        <span class="hljs-property">sujet</span>.
+        <span class="hljs-title function_">toLowerCase</span>().
+        <span class="hljs-title function_">includes</span>(val)
+                    );
+        <span class="hljs-title function_">render</span>(filtered);
+                });
+        <span class="hljs-title function_">render</span>(data);
+            });
+
+        
+        <span class="hljs-keyword">function</span> 
+        <span class="hljs-title function_">render</span>(
+        <span class="hljs-params">books</span>) {
+        <span class="hljs-keyword">const</span> container = 
+        <span class="hljs-variable language_">document</span>.
+        <span class="hljs-title function_">getElementById</span>(
+        <span class="hljs-string">'results'</span>);
+            container.
+        <span class="hljs-property">innerHTML</span> = books.
+        <span class="hljs-title function_">map</span>(
+        <span class="hljs-function">
+          <span class="hljs-params">b</span> =&gt;
+        </span> 
+        <span class="hljs-string">`&lt;p&gt;
+          <span class="hljs-subst">${b.titre}</span> - &lt;b&gt;
+          <span class="hljs-subst">${b.sujet}</span>&lt;/b&gt;&lt;/p&gt;`
+        </span>).
+        <span class="hljs-title function_">join</span>(
+        <span class="hljs-string">''</span>);
+        }
+      </span>
+      <span class="hljs-tag">&lt;/
+        <span class="hljs-name">script</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;/
+        <span class="hljs-name">body</span>&gt;
+      </span>
+      <span class="hljs-tag">&lt;/
+        <span class="hljs-name">html</span>&gt;
+      </span>
+    </code>
+  </pre>
+</div>
