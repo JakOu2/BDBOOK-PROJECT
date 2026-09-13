@@ -71,6 +71,8 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       border-left: 4px solid #4CAF50;
+      display: flex;
+      flex-direction: column;
     }
 
     .book-card:hover {
@@ -92,6 +94,31 @@
 
     .book-card strong {
       color: #4CAF50;
+    }
+
+    .book-link {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 16px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s, transform 0.2s;
+      font-weight: 500;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .book-link:hover {
+      background-color: #45a049;
+      transform: scale(1.02);
+    }
+
+    .book-link:active {
+      transform: scale(0.98);
     }
 
     .message {
@@ -203,6 +230,7 @@
         <div class="book-card">
           <h3>${escapeHtml(book.titre || 'Sans titre')}</h3>
           <p><strong>Sujet:</strong> ${escapeHtml(book.sujet || 'Non spécifié')}</p>
+          ${book.driveLink ? `<a href="${escapeHtml(book.driveLink)}" target="_blank" rel="noopener noreferrer" class="book-link">📄 Accéder au fichier</a>` : ''}
         </div>
       `).join('');
     }
