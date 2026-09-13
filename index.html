@@ -400,12 +400,12 @@
             setTimeout(() => { container.innerHTML = ''; }, 5000);
         }
 
-        // Load catalogue from JSON
+        // Load catalogue from JSON with improved error handling
         async function loadCatalogue() {
             try {
                 const response = await fetch(CONFIG.catalogFile);
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: Impossible de charger le catalogue`);
+                    throw new Error(`HTTP ${response.status}: Impossible de charger le catalogue. Assurez-vous d'ouvrir la page via un serveur web local (pas file://).`);
                 }
                 const data = await response.json();
                 
@@ -420,13 +420,19 @@
                 renderBooks(allBooks);
                 setupSearch();
             } catch (error) {
+                console.error('Erreur de chargement du catalogue:', error);
                 showError(error.message);
                 const resultsContainer = document.getElementById('results');
                 resultsContainer.innerHTML = `
-                    <div class="empty-state">
+                    <div class="empty-state" style="grid-column: 1 / -1;">
                         <div class="empty-state-icon">⚠️</div>
                         <p>Impossible de charger le catalogue</p>
-                        <p style="font-size: 0.9em; color: #999;">${escapeHtml(error.message)}</p>
+                        <p style="font-size: 0.9em; color: #999;">
+                            ${error.message.includes('file://') ? 
+                                'Conseil: Ouvrez la page avec un serveur local (python -m http.server 8000)' : 
+                                escapeHtml(error.message)
+                            }
+                        </p>
                     </div>
                 `;
             }
@@ -456,6 +462,7 @@
                     </p>
                     ${book.auteur ? `<p><strong>Auteur:</strong> ${escapeHtml(book.auteur)}</p>` : ''}
                     ${book.annee ? `<p><strong>Année:</strong> ${escapeHtml(String(book.annee))}</p>` : ''}
+                    ${book.lien ? `<p><a href="${escapeHtml(book.lien)}" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none;">Voir le lien →</a></p>` : ''}
                 </div>
             `).join('');
         }
@@ -471,6 +478,8 @@
         // Setup search functionality
         function setupSearch() {
             const searchInput = document.getElementById('search');
+            if (!searchInput) return;
+            
             searchInput.addEventListener('input', debounce((e) => {
                 const query = e.target.value.toLowerCase().trim();
                 
@@ -512,11 +521,17 @@
             `).join('');
         }
 
-        // Initialize
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', () => {
             loadCatalogue();
             loadProjectFiles();
         });
+
+        // Log page protocol for debugging
+        console.log('Page protocol:', window.location.protocol);
+        if (window.location.protocol === 'file:') {
+            console.warn('⚠️ Page ouverte avec le protocole file://. Pour charger catalogue.json, utilisez un serveur web local.');
+        }
     </script>
 </body>
 </html>
